@@ -157,7 +157,10 @@ return {
         "folke/twilight.nvim",
         config = function()
             vim.cmd("Twilight")
-        end
+        end,
+        keys = {
+            { "<leader>tw", "<cmd>Twilight<cr>", desc = "Toggle Twilight" }
+        }
     },
     {
         "folke/zen-mode.nvim",
