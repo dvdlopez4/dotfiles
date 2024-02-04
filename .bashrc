@@ -24,3 +24,6 @@ alias net="/mnt/c/Windows/System32/net.exe"
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
+. "$HOME/.cargo/env"
+
+PATH="/home/david/.local/share/bob/nvim-bin:$PATH"
