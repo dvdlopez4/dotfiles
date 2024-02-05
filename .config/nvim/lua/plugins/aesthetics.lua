@@ -155,6 +155,7 @@ return {
     },
     {
         "folke/twilight.nvim",
+        lazy = false,
         config = function()
             vim.cmd("Twilight")
         end,
