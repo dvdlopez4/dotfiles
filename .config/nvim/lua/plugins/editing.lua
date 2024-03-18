@@ -25,6 +25,19 @@ return {
     },
     { 'nvim-treesitter/playground' },
     {
+        'nvimtools/none-ls.nvim',
+        config = function()
+            local null_ls = require("null-ls")
+
+            -- register any number of sources simultaneously
+            local sources = {
+                null_ls.builtins.formatting.prettier,
+            }
+
+            null_ls.setup({ sources = sources })
+        end
+    },
+    {
         'VonHeikemen/lsp-zero.nvim',
         dependencies = {
             -- LSP Support
@@ -106,6 +119,13 @@ return {
                 enable_import_completion = true,
                 analyze_open_documents_only = false,
                 enable_editorconfig_support = true,
+            }
+
+            require 'lspconfig'.tsserver.setup {
+                on_attach = function(client)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentRangeFormattingProvider = false
+                end,
             }
 
             lsp.on_attach(function(client, bufnr)
