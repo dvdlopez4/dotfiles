@@ -38,10 +38,9 @@ return {
         end
     },
     {
-        'VonHeikemen/lsp-zero.nvim',
+        'neovim/nvim-lspconfig', -- Required
         dependencies = {
             -- LSP Support
-            'neovim/nvim-lspconfig',             -- Required
             'williamboman/mason.nvim',           -- Optional
             'williamboman/mason-lspconfig.nvim', -- Optional
 
@@ -58,77 +57,14 @@ return {
             'rafamadriz/friendly-snippets', -- Optional
         },
         config = function()
-            local lsp = require('lsp-zero')
-            local mason = require('mason')
+            local cmp_lsp = require("cmp_nvim_lsp")
+            local capabilities = vim.tbl_deep_extend(
+                "force",
+                {},
+                vim.lsp.protocol.make_client_capabilities(),
+                cmp_lsp.default_capabilities())
 
-            mason.setup()
-            require('mason-lspconfig').setup({
-                ensure_installed = { "bashls", "jsonls", "rust_analyzer", "tsserver", "html", "lua_ls" },
-                handlers = {
-                    lsp.default_setup,
-                },
-            })
-            lsp.preset('recommended')
-
-
-            local cmp = require('cmp')
-            local cmp_action = require('lsp-zero').cmp_action()
-            local cmp_select = { behavior = cmp.SelectBehavior.Select }
-            cmp.setup({
-                window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-                    ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-                    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                })
-            })
-
-            lsp.set_preferences({
-                sign_icons = {}
-            })
-
-            lsp.configure('lua_ls', {
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { 'vim' }
-                        }
-                    }
-                }
-            })
-
-            local lspconfig = require("lspconfig")
-            local pid = vim.fn.getpid()
-            local omnisharp_bin = "~/.local/share/lazy/mason/packages/omnisharp/omnisharp"
-
-            require 'lspconfig'.omnisharp.setup {
-                cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
-                filetypes = { "cs", "vb" },
-                root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj"),
-
-                enable_ms_build_load_projects_on_demand = true,
-                enable_roslyn_analyzers = true,
-                enable_import_completion = true,
-                analyze_open_documents_only = false,
-                enable_editorconfig_support = true,
-            }
-
-            require 'lspconfig'.tsserver.setup {
-                on_attach = function(client)
-                    client.server_capabilities.documentFormattingProvider = false
-                    client.server_capabilities.documentRangeFormattingProvider = false
-                end,
-            }
-
-            lsp.on_attach(function(client, bufnr)
+            local on_attach = function(client, bufnr)
                 local opts = { buffer = bufnr, remap = false }
 
                 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
@@ -141,9 +77,106 @@ return {
                 vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
                 vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
                 vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-            end)
+            end
 
-            lsp.setup()
+            require('mason').setup()
+            require('mason-lspconfig').setup({
+                ensure_installed = {
+                    "bashls",
+                    "jsonls",
+                    "rust_analyzer",
+                    "tsserver",
+                    "html",
+                    "lua_ls"
+                },
+                handlers = {
+                    function(server_name) -- default handler (optional)
+                        require("lspconfig")[server_name].setup {
+                            on_attach = on_attach,
+                            capabilities = capabilities
+                        }
+                    end,
+
+                    ["lua_ls"] = function()
+                        local lspconfig = require("lspconfig")
+                        lspconfig.lua_ls.setup {
+                            on_attach = on_attach,
+                            capabilities = capabilities,
+                            settings = {
+                                Lua = {
+                                    diagnostics = {
+                                        globals = {
+                                            "vim",
+                                            "it",
+                                            "describe",
+                                            "before_each",
+                                            "after_each"
+                                        },
+
+                                    }
+                                }
+                            }
+                        }
+                    end,
+                    ["omnisharp"] = function()
+                        local lspconfig = require("lspconfig")
+                        local pid = vim.fn.getpid()
+                        local omnisharp_bin = "~/.local/share/lazy/mason/packages/omnisharp/omnisharp"
+
+                        lspconfig.omnisharp.setup {
+                            cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
+                            filetypes = { "cs", "vb" },
+                            root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj"),
+
+                            enable_ms_build_load_projects_on_demand = true,
+                            enable_roslyn_analyzers = true,
+                            enable_import_completion = true,
+                            analyze_open_documents_only = false,
+                            enable_editorconfig_support = true,
+                        }
+                    end,
+                    ["tsserver"] = function()
+                        local lspconfig = require("lspconfig")
+                        lspconfig.tsserver.setup {
+                            on_attach = function(client, bufnr)
+                                print("hello tsserver, again...")
+                                client.server_capabilities.documentFormattingProvider = false
+                                client.server_capabilities.documentRangeFormattingProvider = false
+                            end,
+                        }
+                    end
+                },
+            })
+            local cmp = require('cmp')
+            local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        require('luasnip').lsp_expand(args.body)
+                    end,
+                },
+                window = {
+                    completion = cmp.config.window.bordered(),
+                    documentation = cmp.config.window.bordered(),
+                },
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                }),
+                sources = cmp.config.sources({
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' }, -- For luasnip users.
+                }, {
+                    { name = 'buffer' },
+                })
+
+            })
+
 
             vim.diagnostic.config({
                 virtual_text = true
