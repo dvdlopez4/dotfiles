@@ -64,6 +64,11 @@ return {
                 vim.lsp.protocol.make_client_capabilities(),
                 cmp_lsp.default_capabilities())
 
+            capabilities.textDocument.foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = true
+            }
+
             require('mason').setup()
             require('mason-lspconfig').setup({
                 ensure_installed = {
@@ -107,6 +112,7 @@ return {
                         local omnisharp_bin = "~/.local/share/lazy/mason/packages/omnisharp/omnisharp"
 
                         lspconfig.omnisharp.setup {
+                            capabilities = capabilities,
                             cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
                             filetypes = { "cs", "vb" },
                             root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj"),
@@ -121,6 +127,7 @@ return {
                     ["tsserver"] = function()
                         local lspconfig = require("lspconfig")
                         lspconfig.tsserver.setup {
+                            capabilities = capabilities,
                             on_attach = function(client, bufnr)
                                 client.server_capabilities.documentFormattingProvider = false
                                 client.server_capabilities.documentRangeFormattingProvider = false
