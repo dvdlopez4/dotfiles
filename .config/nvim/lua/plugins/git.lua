@@ -24,10 +24,8 @@ return {
                 "<cmd>Git<CR>",
                 desc = "Open fugitive"
             },
-            { "<leader>gl",  "<cmd>terminal git log --decorate<CR>" },
-            { "<leader>gol", "<cmd>Git log --pretty='format:%h %ai %an %s %d'<CR>" },
-            { "<leader>grl", "<cmd>Git log --raw<CR>" },
-            { "<leader>gba", "<cmd>Git branch -a<CR>" },
+            { "<leader>gl", "<cmd>Git log --pretty='format:%h %ai %an %s %d'<CR>" },
+            { "<leader>gb", "<cmd>Git branch -a<CR>" },
             {
                 "<leader>gB",
                 "<cmd>Git blame<CR>",
@@ -66,6 +64,8 @@ return {
                     vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
                 end,
             })
+            vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
+            vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
         end
     },
     {
