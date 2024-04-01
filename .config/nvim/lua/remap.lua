@@ -71,8 +71,8 @@ vim.keymap.set("n", "<leader>tn", function()
 end, { desc = "Create a new tab" })
 
 vim.keymap.set("n", "<leader>en", function()
-    vim.cmd("e " .. vim.fn.stdpath('config'))
-    vim.cmd("cd " .. vim.fn.stdpath('config'))
+    vim.cmd("e " .. os.getenv("HOME") .. "/dotfiles")
+    vim.cmd("lcd " .. os.getenv("HOME") .. "/dotfiles")
 end, { desc = "Open nvim folder" })
 
 in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
