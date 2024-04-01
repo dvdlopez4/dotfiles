@@ -10,6 +10,7 @@ return {
     },
     {
         'nvim-lualine/lualine.nvim',
+        event = "VeryLazy",
         config = function()
             local clients_lsp = function()
                 local bufnr = vim.api.nvim_get_current_buf()
