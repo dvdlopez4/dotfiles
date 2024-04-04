@@ -64,8 +64,8 @@ return {
                     vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
                 end,
             })
-            vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
-            vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
+            vim.keymap.set("n", "<leader>gu", "<cmd>diffget //2<CR>")
+            vim.keymap.set("n", "<leader>gh", "<cmd>diffget //3<CR>")
         end
     },
     {
