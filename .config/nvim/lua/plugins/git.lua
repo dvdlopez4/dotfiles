@@ -31,11 +31,6 @@ return {
                 "<cmd>Git blame<CR>",
                 desc = "git blame"
             },
-            {
-                "<leader>gg",
-                "<cmd>Git log --graph --format=format:'%C(auto)%h%C(reset) | %ad | %C(auto)%s%C(reset) | (%an) %d'<CR>",
-                desc = "Pretty git graph"
-            }
         },
         config = function()
             local my_fugitive_group = vim.api.nvim_create_augroup("my_fugitive_group", {})
@@ -84,5 +79,20 @@ return {
                 }
             })
         end
-    }
+    },
+    {
+        "rbong/vim-flog",
+        lazy = true,
+        cmd = { "Flog", "Flogsplit", "Floggit" },
+        dependencies = {
+            "tpope/vim-fugitive",
+        },
+        keys = {
+            {
+                "<leader>gg",
+                "<cmd>Flogsplit<CR>",
+                desc = "Pretty git graph"
+            }
+        }
+    },
 }
