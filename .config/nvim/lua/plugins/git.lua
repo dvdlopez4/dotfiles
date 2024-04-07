@@ -24,20 +24,13 @@ return {
                 "<cmd>Git<CR>",
                 desc = "Open fugitive"
             },
-            { "<leader>gl",  "<cmd>terminal git log --decorate<CR>" },
-            { "<leader>gol", "<cmd>Git log --pretty='format:%h %ai %an %s %d'<CR>" },
-            { "<leader>grl", "<cmd>Git log --raw<CR>" },
-            { "<leader>gba", "<cmd>Git branch -a<CR>" },
+            { "<leader>gl", "<cmd>Git log --pretty='format:%h %ai %an %s %d'<CR>" },
+            { "<leader>gb", "<cmd>Git branch -a<CR>" },
             {
                 "<leader>gB",
                 "<cmd>Git blame<CR>",
                 desc = "git blame"
             },
-            {
-                "<leader>gg",
-                "<cmd>Git log --graph --format=format:'%C(auto)%h%C(reset) | %ad | %C(auto)%s%C(reset) | (%an) %d'<CR>",
-                desc = "Pretty git graph"
-            }
         },
         config = function()
             local my_fugitive_group = vim.api.nvim_create_augroup("my_fugitive_group", {})
@@ -66,6 +59,8 @@ return {
                     vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
                 end,
             })
+            vim.keymap.set("n", "<leader>gu", "<cmd>diffget //2<CR>")
+            vim.keymap.set("n", "<leader>gh", "<cmd>diffget //3<CR>")
         end
     },
     {
@@ -78,7 +73,26 @@ return {
             'nvim-tree/nvim-web-devicons',
         },
         config = function()
-            require "octo".setup()
+            require "octo".setup({
+                suppress_missing_scope = {
+                    projects_v2 = true,
+                }
+            })
         end
-    }
+    },
+    {
+        "rbong/vim-flog",
+        lazy = true,
+        cmd = { "Flog", "Flogsplit", "Floggit" },
+        dependencies = {
+            "tpope/vim-fugitive",
+        },
+        keys = {
+            {
+                "<leader>gg",
+                "<cmd>Flogsplit<CR>",
+                desc = "Pretty git graph"
+            }
+        }
+    },
 }
