@@ -20,6 +20,12 @@ return {
         cmd = "Git",
         keys = {
             {
+                "<leader>gm",
+                "<cmd>Git checkout main<CR>",
+                desc = "Checkout main"
+            },
+
+            {
                 "<leader>gs",
                 "<cmd>Git<CR>",
                 desc = "Open fugitive"
@@ -90,7 +96,7 @@ return {
         keys = {
             {
                 "<leader>gg",
-                "<cmd>Flogsplit<CR>",
+                "<cmd>Flog<CR>",
                 desc = "Pretty git graph"
             }
         }
