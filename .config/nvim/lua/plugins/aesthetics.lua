@@ -49,9 +49,21 @@ return {
                 sections = {
                     lualine_a = { 'mode' },
                     lualine_b = { 'branch', 'diff', 'diagnostics' },
-                    lualine_c = { 'filename', function()
-                        return 'Bufnr: ' .. vim.fn.bufnr()
-                    end },
+                    lualine_c = { 'filename', function() return 'Bufnr: ' .. vim.fn.bufnr() end,
+
+                        {
+                            function()
+                                local status = require("noice").api.statusline.mode.get()
+                                if string.find(status, 'recording') then
+                                    return status
+                                else
+                                    return ''
+                                end
+                            end,
+                            cond = require("noice").api.statusline.mode.has,
+                            color = { fg = "#ff9e64" },
+                        }
+                    },
                     lualine_x = { 'encoding', 'fileformat', 'filetype', clients_lsp },
                     lualine_y = { 'progress' },
                     lualine_z = { 'location' }
@@ -135,6 +147,36 @@ return {
         },
         config = function()
             require("noice").setup({
+                views = {
+                    cmdline_popup = {
+                        position = {
+                            row = 5,
+                            col = "50%",
+                        },
+                        size = {
+                            width = 60,
+                            height = "auto",
+                        },
+                    },
+                    popupmenu = {
+                        relative = "editor",
+                        position = {
+                            row = 8,
+                            col = "50%",
+                        },
+                        size = {
+                            width = 60,
+                            height = 10,
+                        },
+                        border = {
+                            style = "rounded",
+                            padding = { 0, 1 },
+                        },
+                        win_options = {
+                            winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+                        },
+                    },
+                },
                 lsp = {
                     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
                     override = {
