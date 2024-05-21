@@ -86,6 +86,7 @@ return {
             })
         end,
         keys = {
+            { "<leader>oc", "<cmd>Octo pr create<CR>", desc = "Octo create pull request" },
             { "<leader>op", "<cmd>Octo pr list<CR>", desc = "Octo list open pull requests" },
             { "<leader>oo", "<cmd>Octo pr reload<CR>", desc = "Octo reload pull request" },
             { "<leader>or", "<cmd>Octo review start<CR>", desc = "Octo start review" },
