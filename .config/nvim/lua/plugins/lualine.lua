@@ -1,6 +1,10 @@
 return {
     'nvim-lualine/lualine.nvim',
-    event = "VeryLazy",
+    lazy = false,
+
+    dependencies = {
+        "folke/noice.nvim",
+    },
     config = function()
         local clients_lsp = function()
             local bufnr = vim.api.nvim_get_current_buf()
