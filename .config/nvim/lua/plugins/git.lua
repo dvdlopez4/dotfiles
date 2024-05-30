@@ -84,7 +84,13 @@ return {
                     projects_v2 = true,
                 }
             })
-        end
+        end,
+        keys = {
+            { "<leader>op", "<cmd>Octo pr list<CR>", desc = "Octo list open pull requests" },
+            { "<leader>oo", "<cmd>Octo pr reload<CR>", desc = "Octo reload pull request" },
+            { "<leader>or", "<cmd>Octo review start<CR>", desc = "Octo start review" },
+            { "<leader>os", "<cmd>Octo review submit<CR>", desc = "Octo submit review" },
+        }
     },
     {
         "rbong/vim-flog",
