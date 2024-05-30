@@ -121,6 +121,9 @@ return {
                     end,
 
                     ["lua_ls"] = function()
+                        require("neodev").setup({
+                            library = { plugins = { "nvim-dap-ui" }, types = true },
+                        })
                         local lspconfig = require("lspconfig")
                         lspconfig.lua_ls.setup {
                             capabilities = capabilities,
@@ -252,5 +255,6 @@ return {
         config = function()
             require('leap').create_default_mappings()
         end
-    }
+    },
+    { "folke/neodev.nvim",         opts = {} }
 }

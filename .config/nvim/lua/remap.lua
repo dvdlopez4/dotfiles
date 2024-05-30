@@ -71,16 +71,18 @@ vim.keymap.set("n", "<leader>tn", function()
 end, { desc = "Create a new tab" })
 
 vim.keymap.set("n", "<leader>en", function()
-    vim.cmd("e " .. os.getenv("HOME") .. "/dotfiles/.config")
+    vim.cmd("tabe " .. os.getenv("HOME") .. "/dotfiles/.config")
     vim.cmd("lcd " .. os.getenv("HOME") .. "/dotfiles/.config")
 end, { desc = "Open nvim config" })
 
-in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
-if in_wsl then
-    vim.g.clipboard = {
-        name = 'wsl clipboard',
-        copy = { ["+"] = { "clip.exe" }, ["*"] = { "clip.exe" } },
-        paste = { ["+"] = { "nvim_paste" }, ["*"] = { "nvim_paste" } },
-        cache_enabled = true
-    }
-end
+vim.opt.clipboard = "unnamedplus"
+
+-- in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
+-- if in_wsl then
+--     vim.g.clipboard = {
+--         name = 'wsl clipboard',
+--         copy = { ["+"] = { "clip.exe" }, ["*"] = { "clip.exe" } },
+--         paste = { ["+"] = { "nvim_paste" }, ["*"] = { "nvim_paste" } },
+--         cache_enabled = true
+--     }
+-- end
