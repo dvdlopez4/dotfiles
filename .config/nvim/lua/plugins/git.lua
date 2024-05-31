@@ -65,8 +65,8 @@ return {
                     vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
                 end,
             })
-            vim.keymap.set("n", "<leader>gu", "<cmd>diffget //2<CR>")
-            vim.keymap.set("n", "<leader>gh", "<cmd>diffget //3<CR>")
+            vim.keymap.set("n", "<leader>gh", "<cmd>diffget //2<CR>")
+            vim.keymap.set("n", "<leader>gl", "<cmd>diffget //3<CR>")
         end
     },
     {
@@ -86,6 +86,7 @@ return {
             })
         end,
         keys = {
+            { "<leader>oc", "<cmd>Octo pr create<CR>", desc = "Octo create pull request" },
             { "<leader>op", "<cmd>Octo pr list<CR>", desc = "Octo list open pull requests" },
             { "<leader>oo", "<cmd>Octo pr reload<CR>", desc = "Octo reload pull request" },
             { "<leader>or", "<cmd>Octo review start<CR>", desc = "Octo start review" },
