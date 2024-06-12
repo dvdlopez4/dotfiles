@@ -9,7 +9,7 @@ return {
             vim.g.db_ui_save_location = "~/.config/nvim/db_ui"
         end,
         keys = {
-            { "<leader>db", ":tabe DBUIToggle<CR>", desc = "Open database UI" },
+            { "<leader>DB", "<cmd>DBUIToggle<CR>", desc = "Open database UI" },
         }
     },
     {
