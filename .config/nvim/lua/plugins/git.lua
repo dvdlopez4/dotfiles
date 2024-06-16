@@ -30,8 +30,7 @@ return {
                 "<cmd>Git<CR>",
                 desc = "Open fugitive"
             },
-            { "<leader>gl", "<cmd>Git log --pretty='format:%h %ai %an %s %d'<CR>" },
-            { "<leader>gb", "<cmd>Git branch -a<CR>" },
+            { "<leader>gb", "<cmd>Telescope git_branches<CR>" },
             {
                 "<leader>gB",
                 "<cmd>Git blame<CR>",
@@ -56,13 +55,12 @@ return {
                     end, opts, { desc = "push" })
 
                     -- rebase always
-                    vim.keymap.set("n", "<leader>P", function()
-                        vim.cmd.Git({ 'pull', '--rebase' })
-                    end, opts)
+                    vim.keymap.set("n", "<leader>P", "<cmd>Git pull --rebase<CR>", opts)
 
                     -- NOTE: It allows me to easily set the branch i am pushing and any tracking
                     -- needed if i did not set the branch up correctly
                     vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
+                    vim.keymap.set("n", "<leader>b", ":Git checkout -b ", opts);
                 end,
             })
             vim.keymap.set("n", "<leader>gh", "<cmd>diffget //2<CR>")
