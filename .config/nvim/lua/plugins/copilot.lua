@@ -10,6 +10,17 @@ return {
         opts = {
             -- See Configuration section for rest
         },
+        config = function()
+            require("CopilotChat").setup {
+                -- See Configuration section for rest
+                mappings = {
+                    complete = {
+                        detail = 'Use @<Tab> or /<Tab> for options.',
+                        insert = '<C-Y>',
+                    }
+                }
+            }
+        end,
         keys = {
             {
                 "<leader>cc", "<cmd>CopilotChatToggle<CR>", desc = "Start Copilot Chat Toggle"

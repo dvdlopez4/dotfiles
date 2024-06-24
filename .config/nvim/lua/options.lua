@@ -33,4 +33,4 @@ vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = nil
 vim.opt.clipboard = "unnamedplus"
-
+vim.g.copilot_assume_mapped = true
