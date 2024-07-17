@@ -9,6 +9,20 @@ return {
         name = "catppuccin",
         priority = 1000,
         config = function()
+            require("catppuccin").setup {
+                custom_highlights = function(colors)
+                    return {
+                        NormalMoody = { fg = colors.blue },
+                        InsertMoody = { fg = colors.green },
+                        VisualMoody = { fg = colors.pink },
+                        CommandMoody = { fg = colors.maroon },
+                        ReplaceMoody = { fg = colors.red },
+                        SelectMoody = { fg = colors.pink },
+                        TerminalMoody = { fg = colors.mauve },
+                        TerminalNormalMoody = { fg = colors.mauve },
+                    }
+                end
+            }
             -- load the colorscheme here
             vim.cmd([[colorscheme catppuccin-mocha]])
         end,
