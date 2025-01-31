@@ -17,6 +17,9 @@ return {
     },
     {
         'tpope/vim-fugitive',
+        dependencies = {
+            'nvim-telescope/telescope.nvim',
+        },
         cmd = "Git",
         keys = {
             {
@@ -31,6 +34,7 @@ return {
                 desc = "Open fugitive"
             },
             { "<leader>gb", "<cmd>Telescope git_branches<CR>" },
+            { "<leader>gS", "<cmd>Telescope git_stash<CR>" },
             {
                 "<leader>gB",
                 "<cmd>Git blame<CR>",
