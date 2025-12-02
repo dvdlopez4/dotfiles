@@ -13,52 +13,88 @@ vim.opt.rtp:prepend(lazypath)
 
 require("options")
 require("remap")
-require("lazy").setup("plugins")
+require("lazy").setup({ import = "plugins" }, {
+    checker = {
+        enabled = true,
+        notify = false,
+    },
+    change_detection = {
+        notify = false,
+    },
+})
 
 local augroup = vim.api.nvim_create_augroup
-local ThePrimeagenGroup = augroup('ThePrimeagen', {})
+local ThePrimeagenGroup = augroup("ThePrimeagen", {})
 
 local autocmd = vim.api.nvim_create_autocmd
-local yank_group = augroup('HighlightYank', {})
+local yank_group = augroup("HighlightYank", {})
 
-
-autocmd('TextYankPost', {
+autocmd("TextYankPost", {
     group = yank_group,
-    pattern = '*',
+    pattern = "*",
     callback = function()
         vim.highlight.on_yank({
-            higroup = 'IncSearch',
+            higroup = "IncSearch",
             timeout = 40,
         })
     end,
 })
 
-autocmd('LspAttach', {
-    group = ThePrimeagenGroup,
-    callback = function(e)
-        local opts = { buffer = e.buf }
-        vim.keymap.set("n", "gd", require('telescope.builtin').lsp_definitions, opts)
-        vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, opts)
-        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-        vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-        vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-        vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+-- autocmd("LspAttach", {
+--     group = ThePrimeagenGroup,
+--     callback = function(e)
+--         local opts = { buffer = e.buf, silent = true }
+--         vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, opts)
+--         vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
+--         vim.keymap.set("n", "K", function()
+--             vim.lsp.buf.hover()
+--         end, opts)
+--         vim.keymap.set("n", "<leader>vws", function()
+--             vim.lsp.buf.workspace_symbol()
+--         end, opts)
+--         vim.keymap.set("n", "<leader>vd", function()
+--             vim.diagnostic.open_float()
+--         end, opts)
+--         vim.keymap.set("n", "<leader>vca", function()
+--             vim.lsp.buf.code_action()
+--         end, opts)
+--         vim.keymap.set("n", "<leader>vrn", function()
+--             vim.lsp.buf.rename()
+--         end, opts)
+--         vim.keymap.set("i", "<C-h>", function()
+--             vim.lsp.buf.signature_help()
+--         end, opts)
+--         vim.keymap.set("n", "[d", function()
+--             vim.diagnostic.goto_next()
+--         end, opts)
+--         vim.keymap.set("n", "]d", function()
+--             vim.diagnostic.goto_prev()
+--         end, opts)
 
-        local client = vim.lsp.get_client_by_id(e.data.client_id)
-        if client and client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-                buffer = e.buf,
-                callback = vim.lsp.buf.document_highlight,
-            })
+--         -- local client = vim.lsp.get_client_by_id(e.data.client_id)
+--         -- if client and client.server_capabilities.documentHighlightProvider then
+--         --     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+--         --         buffer = e.buf,
+--         --         callback = vim.lsp.buf.document_highlight,
+--         --     })
 
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-                buffer = e.buf,
-                callback = vim.lsp.buf.clear_references,
-            })
-        end
-    end
+--         --     vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+--         --         buffer = e.buf,
+--         --         callback = vim.lsp.buf.clear_references,
+--         --     })
+--         -- end
+--     end,
+-- })
+
+local severity = vim.diagnostic.severity
+
+vim.diagnostic.config({
+    signs = {
+        text = {
+            [severity.ERROR] = " ",
+            [severity.WARN] = " ",
+            [severity.HINT] = "󰠠 ",
+            [severity.INFO] = " ",
+        },
+    },
 })

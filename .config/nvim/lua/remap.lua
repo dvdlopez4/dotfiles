@@ -20,7 +20,9 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format { async = true } end)
+vim.keymap.set("n", "<leader>f", function()
+    vim.lsp.buf.format({ async = true })
+end)
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -37,4 +39,3 @@ vim.keymap.set("n", "<leader>en", function()
     vim.cmd("tabe " .. os.getenv("HOME") .. "/dotfiles/.config")
     vim.cmd("lcd " .. os.getenv("HOME") .. "/dotfiles/.config")
 end, { desc = "Open nvim config" })
-
