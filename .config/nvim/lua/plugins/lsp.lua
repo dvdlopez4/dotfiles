@@ -3,17 +3,25 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/lazydev.nvim", opts = {} },
+        {
+            "folke/lazydev.nvim",
+            ft = "lua",
+            opts = {
+                library = {
+                    { path = "${3rd}/love2d/library" },
+                },
+            },
+        },
+        config = function()
+            -- import cmp-nvim-lsp plugin
+            local cmp_nvim_lsp = require("cmp_nvim_lsp")
+
+            -- used to enable autocompletion (assign to every lsp server config)
+            local capabilities = cmp_nvim_lsp.default_capabilities()
+
+            vim.lsp.config("*", {
+                capabilities = capabilities,
+            })
+        end,
     },
-    config = function()
-        -- import cmp-nvim-lsp plugin
-        local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
-        -- used to enable autocompletion (assign to every lsp server config)
-        local capabilities = cmp_nvim_lsp.default_capabilities()
-
-        vim.lsp.config("*", {
-            capabilities = capabilities,
-        })
-    end,
 }
