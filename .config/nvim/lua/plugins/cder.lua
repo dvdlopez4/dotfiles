@@ -5,7 +5,7 @@ return {
             extensions = {
                 cder = {
                     previewer_command =
-                        'exa ' ..
+                        'eza ' ..
                         '-a ' ..
                         '--color=always ' ..
                         '-T ' ..
@@ -17,14 +17,14 @@ return {
                         '--no-filesize ' ..
                         '--ignore-glob=\".git|node_modules|cdk.out\"',
                     dir_command = {
-                        'fdfind',
+                        'fd',
                         '--type=d',
                         '-E',
                         '{node_modules,GAIT}',
                         '.',
                         os.getenv('PROJ_DIR')
                     },
-                    pager_command = 'batcat --plain --paging=always --pager="less -RS"',
+                    pager_command = 'bat --plain --paging=always --pager="less -RS"',
                     mappings = {
                         default = function(directory)
                             vim.cmd.cd(directory)

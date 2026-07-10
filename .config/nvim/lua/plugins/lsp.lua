@@ -36,7 +36,7 @@ return {
                 "bashls",
                 "jsonls",
                 "rust_analyzer",
-                "tsserver",
+                "ts_ls",
                 "html",
                 "lua_ls"
             },
@@ -88,7 +88,7 @@ return {
                         enable_editorconfig_support = true,
                     }
                 end,
-                ["tsserver"] = function()
+                ["ts_ls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.tsserver.setup {
                         capabilities = capabilities,
